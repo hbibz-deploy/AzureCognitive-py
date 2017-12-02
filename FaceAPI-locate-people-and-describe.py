@@ -5,7 +5,7 @@ from io import BytesIO
 from PIL import Image, ImageDraw
 
 def is_male(attr):
-    if attr == 'Male':
+    if attr == 'male':
         return True
 
 
@@ -27,11 +27,11 @@ def paraMade(key, url):
         response = requests.request('POST', uri_base + '/face/v1.0/detect', json=body, data=None, headers=headers, params=params)
         parsed = json.loads(response.text)
         print("\tIn this picture : %s\nWe found that:\n" % url)
-        print (json.dumps(parsed, sort_keys=True, indent=2))
+#        print (json.dumps(parsed, sort_keys=True, indent=2))
         print("\tThere are %i people" % parsed.__len__())
         for person in parsed:
             print("\t> Person %i:\n\tThis is a %i-year old %s" %(parsed.index(person)+1, person["faceAttributes"]["age"],person["faceAttributes"]["gender"]))
-            if person["faceAttributes"]["hair"]["bald"] == 0.0:
+            if int(person["faceAttributes"]["hair"]["bald"]) == 0:
                 if is_male(person["faceAttributes"]["gender"]):
                     print("\tHis face, has the id %s" % (person['faceId']))
                 else:
